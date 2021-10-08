@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <!-- リセットcss読み込み -->
+    <link rel="stylesheet" href="css/reset.css">
+    <!-- style.css読み込み -->
+    <link rel="stylesheet" href="css/style.css">
+    <!-- jquery読み込み -->
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
+    <title>ジャンケンゲーム</title>
+</head>
+<body>
+    <!-- タイトルエリア -->
+    <div class="main">
+        <h1 class="title">ジャンケンゲーム</h1>
+    </div>
+
+    <!-- 結果表示エリア -->
+    <div class="result">
+       <h2 class="text"></h2>
+       <p class="result-img"></p>
+       <div class="result-text">誰の勝ち？</div>
+       <div id="startScene">
+        <p></p>
+        <button id="start">START</button>
+       </div>
+    </div>
+
+    <div id="bg">
+        <div id="alertBox">
+            <p>👏Good Job!👏</p>
+            <button id='ok'>もう一回</button>
+        </div>
+    </div>
+
+    <!-- 入力エリア -->
+    <div class="my-hand">
+        <ul class="hand-list">
+            <li id="gu" class="hand" value="1"><p><img class="hand-img" src="images/gu.png" alt=""></p></li>
+            <li id="choki" class="hand" value="2"><p><img class="hand-img" src="images/choki.png" alt=""></p></li>
+            <li id="pa" class="hand" value="3"><p><img class="hand-img" src="images/pa.png" alt=""></p></li>
+        </ul>
+    </div>
+
+<!-- ここからjs -->
+<script>
+    $('#bg').hide();
+    
+    $('button').click(function(){
+        //スタート画面を非表示
+        $('#startScene').hide();
+
+    });
+
+    // グーボタンが押されたときの処理
+    $('.hand').on('click', function(){
+
+        // 押したボタンのvalueを取得
+        let data = $(this).val();
+        console.log(data);
+
+        // 1~3の整数をランダム生成
+        let teki_num = Math.ceil(Math.random()*3);
+                
+
+        // 相手の手による条件分岐
+        if (data - teki_num == 0) {
+            //おあいこの条件 引き算をして０だった場合
+            $('.result-text').html('おあいこ');
+
+        }else if (data - teki_num == -1 || data - teki_num == 2){
+             //勝ちの場合の条件 引き算をして-1もしくは２だった場合
+             $('.result-text').html('あなたの勝ち');
+             $('#bg').fadeIn(300);
+
+             $('#ok').click(function(){
+                $('#bg').fadeOut(300);
+
+                //ボタンのテキスト変更
+                $('#start').html('PLAY AGAIN');
+                //スタート画面の表示
+                $('#startScene').show();
+             });
+
+
+        }else if (data - teki_num == -2 || data - teki_num == 1){
+             //負けの場合の条件 引き算をして-2もしくは1だった場合
+             $('.result-text').html('あなたの負け');
+
+        }
+
+        // 共通で表示する文言の処理
+        $('.text').html('相手が出したのは');
+
+        // 相手が出した手を表示する処理
+        if(teki_num == 1){
+            $('.result-img').html('<img src="images/gu.png" alt="">');
+        }else if(teki_num == 2){
+            $('.result-img').html('<img src="images/choki.png" alt="">');
+        }else if(teki_num == 3){
+            $('.result-img').html('<img src="images/pa.png" alt="">');
+        }
+
+
+    });
+    
+
+</script>
+</body>
+</html>
